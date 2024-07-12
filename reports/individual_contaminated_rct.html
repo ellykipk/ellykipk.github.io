@@ -1,0 +1,757 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Simulation Experiments &#8212; Contaminated RCT</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'individual_contaminated_rct';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Contaminated RCT</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="derive_cluster_sample_size_formula.html">Sample size calculation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Simulation Experiments</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="simulation-experiments">
+<h1>Simulation Experiments<a class="headerlink" href="#simulation-experiments" title="Permalink to this heading">#</a></h1>
+<p><span class="math notranslate nohighlight">\(\large{\textbf{Simulating contamination in RCT and evaluating its impact on statistical power}}\)</span></p>
+<p>Induce contamination by changing x% of the control arm indicator to intervention. Evaluate if this approach of inducing contamination agrees with the closed-form formula.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_remove-input tag_remote-output docutils container">
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading required package: Matrix
+
+
+Attaching package: ‘Matrix’
+
+
+The following objects are masked from ‘package:tidyr’:
+
+    expand, pack, unpack
+
+
+Loading required package: foreach
+
+Loading required package: iterators
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the required sample size for a fixed effect </span>
+
+<span class="c1">#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#</span>
+<span class="c1">#+Functions from Stuart J Pocock&#39;s book - Clinical Trials (2013)</span>
+<span class="c1">#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#</span>
+
+<span class="c1"># f(alpha, beta) function from Stuart J. Pocock </span>
+<span class="n">f.alpha.beta</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">type_I_error</span><span class="p">,</span><span class="w"> </span><span class="n">type_II_error</span><span class="p">){</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="n">zbeta</span><span class="o">=</span><span class="nf">qnorm</span><span class="p">(</span><span class="n">type_II_error</span><span class="p">,</span><span class="w"> </span><span class="n">lower.tail</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="w">  </span><span class="n">zalpha</span><span class="o">=</span><span class="nf">qnorm</span><span class="p">(</span><span class="n">type_I_error</span><span class="o">/</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lower.tail</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="n">f_ab</span><span class="o">=</span><span class="p">(</span><span class="n">zbeta</span><span class="o">+</span><span class="n">zalpha</span><span class="p">)</span><span class="o">^</span><span class="m">2</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="nf">return</span><span class="p">(</span><span class="n">f_ab</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="p">}</span>
+
+<span class="c1"># results match those from Stuart&#39;s book. </span>
+<span class="nf">f.alpha.beta</span><span class="p">(</span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.1</span><span class="p">,</span>
+<span class="w">     </span><span class="n">type_II_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">)</span>
+
+
+<span class="c1"># sample size formula for continuous outcome</span>
+<span class="n">cont.sample.size</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">m2</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">sd</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">type_I_error</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                          </span><span class="n">type_II_error</span><span class="p">){</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="n">t1</span><span class="o">=</span><span class="p">(</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="n">sd</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">m1</span><span class="o">-</span><span class="n">m2</span><span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="c1"># first term as t1</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="n">f_ab</span><span class="o">=</span><span class="nf">f.alpha.beta</span><span class="p">(</span><span class="n">type_I_error</span><span class="o">=</span><span class="n">type_I_error</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">type_II_error</span><span class="o">=</span><span class="n">type_II_error</span><span class="p">)</span>
+<span class="w">  </span><span class="n">n</span><span class="o">=</span><span class="nf">ceiling</span><span class="p">(</span><span class="n">t1</span><span class="o">*</span><span class="n">f_ab</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="nf">return</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="p">}</span>
+
+<span class="c1"># results agree with the ones from Pocock&#39;s book. </span>
+<span class="nf">cont.sample.size</span><span class="p">(</span><span class="n">m1</span><span class="o">=</span><span class="m">9.0</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">m2</span><span class="o">=</span><span class="m">9.5</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">sd</span><span class="o">=</span><span class="m">1.8</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                 </span><span class="n">type_II_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output text_html">10.8221738163817</div><div class="output text_html">337</div></div>
+</details>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_html">786</div></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_html"><strong>png:</strong> 2</div></div>
+</div>
+<p><span class="math notranslate nohighlight">\(\large{\textbf{Induce contamination and examine its impact on the statitical power.}}\)</span></p>
+<p>There are two possible ways to induce contamination.</p>
+<ol class="arabic simple">
+<li><p>Simulate y and then change <span class="math notranslate nohighlight">\(x\%\)</span> of the control arm to intervention indicator.</p></li>
+<li><p>Simulate trt variable such that <span class="math notranslate nohighlight">\(prob(trt=1)=0.5+\%x\)</span>. Use this trt variable to simulate y. Change <span class="math notranslate nohighlight">\(x\%\)</span> in trt==1 to trt==0. That way, we have <span class="math notranslate nohighlight">\(x\%\)</span> of control arm who gained intervention benefits.</p></li>
+</ol>
+<p>I am inclined to trust option 2 as opposed to option 1. Option 1 does not directly induce intervention response to control arm. But in any case, I will try both and check how they
+affect power.</p>
+<p><span class="math notranslate nohighlight">\(\small{\textbf{Option 1: Simulate y and then change x% of the control arm to intervention indicator}}\)</span></p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_html"><strong>png:</strong> 2</div></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/d721e3fa6d76dd0cb8f5bdbd5a321495291b0729774f8d4f298ef5b7476ea2bb.png" src="_images/d721e3fa6d76dd0cb8f5bdbd5a321495291b0729774f8d4f298ef5b7476ea2bb.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\textbf{Statistical power when we have a fixed sample size with or without contamination}\)</span></p>
+<div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Statistical power when we have a fixed sample size. Invert sample size formula to get beta then take 1-beta for power. </span>
+
+<span class="n">pwr.func</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                  </span><span class="n">m1</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">m2</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">sd</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">type_I_error</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                 </span><span class="n">contamin.rate</span><span class="o">=</span><span class="kc">NULL</span><span class="p">){</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1"># note that contamination rate must be between 0 and 1. </span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">is.null</span><span class="p">(</span><span class="n">contamin.rate</span><span class="p">)){</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">d</span><span class="o">=</span><span class="p">(</span><span class="m">1</span><span class="o">-</span><span class="n">contamin.rate</span><span class="p">)</span><span class="o">*</span><span class="nf">abs</span><span class="p">(</span><span class="n">m1</span><span class="o">-</span><span class="n">m2</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span><span class="n">else</span><span class="p">{</span>
+<span class="w">        </span><span class="n">d</span><span class="o">=</span><span class="nf">abs</span><span class="p">(</span><span class="n">m1</span><span class="o">-</span><span class="n">m2</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">zalpha</span><span class="o">=</span><span class="nf">qnorm</span><span class="p">(</span><span class="n">type_I_error</span><span class="o">/</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lower.tail</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">t1</span><span class="o">=</span><span class="n">zalpha</span><span class="o">-</span><span class="p">(</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">/</span><span class="n">sd</span><span class="p">))</span><span class="w"> </span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">pwr</span><span class="o">=</span><span class="m">1</span><span class="o">-</span><span class="nf">pnorm</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span><span class="w"> </span><span class="c1">#power since t1 is z_{1-beta}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nf">return</span><span class="p">(</span><span class="n">pwr</span><span class="p">)</span>
+<span class="w">    </span>
+
+<span class="p">}</span>
+
+
+
+<span class="n">n.group1</span><span class="o">=</span><span class="nf">cont.sample.size</span><span class="p">(</span>
+<span class="w">                </span><span class="n">m1</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span>
+<span class="w">                </span><span class="n">m2</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span>
+<span class="w">                </span><span class="n">sd</span><span class="o">=</span><span class="m">1</span><span class="p">,</span>
+<span class="w">                </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                </span><span class="n">type_II_error</span><span class="o">=</span><span class="m">0.2</span><span class="p">)</span>
+
+
+<span class="c1"># the power function is working properly! </span>
+<span class="nf">pwr.func</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n.group1</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m1</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span>
+<span class="w">        </span><span class="n">m2</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span>
+<span class="w">        </span><span class="n">sd</span><span class="o">=</span><span class="m">1</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">)</span>
+
+
+
+<span class="c1"># with contamination. The results here seem to agree with what we have in the simulation based on contamination by option 1. </span>
+<span class="nf">pwr.func</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n.group1</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m1</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span>
+<span class="w">        </span><span class="n">m2</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span>
+<span class="w">        </span><span class="n">sd</span><span class="o">=</span><span class="m">1</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">contamin.rate</span><span class="o">=</span><span class="m">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output text_html">0.800554962628072</div><div class="output text_html">0.501011087449638</div></div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">pwr.func</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">500</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m1</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span>
+<span class="w">        </span><span class="n">m2</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span>
+<span class="w">        </span><span class="n">sd</span><span class="o">=</span><span class="m">1</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">0.885378989800042</div></div>
+</div>
+<p><span class="math notranslate nohighlight">\(\textbf{Simulate trt variable such that}\)</span> <span class="math notranslate nohighlight">\(prob(trt=1)=0.5+ \%x\)</span> <span class="math notranslate nohighlight">\(\textbf{Use this trt variable to simulate y}\)</span></p>
+<p>Change <span class="math notranslate nohighlight">\(x\%\)</span> in trt==1 to trt==0. That way, we have <span class="math notranslate nohighlight">\(x\%\)</span> of control arm who gained intervention benefits.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/9f154b604ae3a2777a9bc4303473deab65157b7890a54292f0d3b9407ba15141.png" src="_images/9f154b604ae3a2777a9bc4303473deab65157b7890a54292f0d3b9407ba15141.png" />
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p><span class="math notranslate nohighlight">\(\textbf{Power vs contamination rate for a fixed sample size using}\)</span> <span class="math notranslate nohighlight">\(\underline{\text{option 1}}\)</span> <span class="math notranslate nohighlight">\(\textbf{method of contamination}\)</span></p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">n.group1</span><span class="o">=</span><span class="nf">cont.sample.size</span><span class="p">(</span>
+<span class="w">                </span><span class="n">m1</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span>
+<span class="w">                </span><span class="n">m2</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span>
+<span class="w">                </span><span class="n">sd</span><span class="o">=</span><span class="m">1</span><span class="p">,</span>
+<span class="w">                </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                </span><span class="n">type_II_error</span><span class="o">=</span><span class="m">0.2</span><span class="p">)</span>
+
+<span class="n">total.n</span><span class="o">=</span><span class="n">n.group1</span><span class="o">*</span><span class="m">2</span>
+
+<span class="n">beta</span><span class="o">=</span><span class="m">0.2</span>
+<span class="n">n</span><span class="o">=</span><span class="n">total.n</span>
+
+<span class="n">contam.mat</span><span class="o">=</span><span class="nf">matrix</span><span class="p">(</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="m">0.1</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="p">)</span>
+
+<span class="n">pwr.vs.contam</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">contam.rate</span><span class="p">){</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">trt</span><span class="o">=</span><span class="nf">rbinom</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">prob</span><span class="o">=</span><span class="m">0.5</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">trt.contam</span><span class="o">=</span><span class="n">trt</span><span class="w"> </span><span class="c1"># create a new trt object and induce contamination according to option 1</span>
+
+<span class="w">    </span><span class="n">trt.contam</span><span class="p">[</span><span class="n">trt</span><span class="o">==</span><span class="m">0</span><span class="p">]</span><span class="o">=</span><span class="n">trt.contam</span><span class="p">[</span><span class="n">trt</span><span class="o">==</span><span class="m">0</span><span class="p">]</span><span class="o">+</span><span class="w"> </span><span class="nf">rbinom</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="nf">sum</span><span class="p">(</span><span class="n">trt</span><span class="o">==</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">prob</span><span class="o">=</span><span class="n">contam.rate</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">1</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">xb</span><span class="o">=</span><span class="n">beta</span><span class="o">*</span><span class="n">trt.contam</span><span class="w"> </span><span class="c1"># use x=trt.contam since that is the variable that acts in the background when we have contamination. </span>
+
+<span class="w">    </span><span class="n">betahat</span><span class="o">=</span><span class="kc">NULL</span>
+<span class="w">    </span><span class="n">signif</span><span class="o">=</span><span class="kc">NULL</span>
+<span class="w">    </span><span class="nf">for </span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">1000</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">y</span><span class="o">=</span><span class="nf">rnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="o">=</span><span class="n">xb</span><span class="p">)</span><span class="w"> </span>
+
+<span class="w">        </span><span class="n">data1</span><span class="o">=</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">trt</span><span class="o">=</span><span class="n">trt</span><span class="p">)</span><span class="w"> </span><span class="c1"># make sure to use trt variable since that is what we have access to in reality. </span>
+
+<span class="w">        </span><span class="n">model1</span><span class="o">=</span><span class="nf">lm</span><span class="p">(</span><span class="n">y</span><span class="o">~</span><span class="n">trt</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">)</span>
+
+<span class="w">        </span><span class="c1">#betahat[i]=summary(model1)$coeff[&#39;trt&#39;, &#39;Estimate&#39;]</span>
+<span class="w">        </span><span class="n">signif</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nf">summary</span><span class="p">(</span><span class="n">model1</span><span class="p">)</span><span class="o">$</span><span class="n">coeff</span><span class="p">[</span><span class="s">&#39;trt&#39;</span><span class="p">,</span><span class="s">&#39;Pr(&gt;|t|)&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="m">0.05</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1"># The estimate power is close to the &#39;true&#39; power!</span>
+<span class="w">    </span><span class="n">pwr</span><span class="o">=</span><span class="nf">round</span><span class="p">(</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">signif</span><span class="p">)</span><span class="o">/</span><span class="nf">length</span><span class="p">(</span><span class="n">signif</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nf">return</span><span class="p">(</span><span class="n">pwr</span><span class="p">)</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">est.pwr.vec</span><span class="o">=</span><span class="nf">apply</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">contam.mat</span><span class="p">,</span><span class="w"> </span><span class="n">MARGIN</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">FUN</span><span class="o">=</span><span class="n">pwr.vs.contam</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the power we expect under the different contaminations using closed form formula </span>
+<span class="n">true.pwr.vec</span><span class="o">=</span><span class="nf">apply</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">contam.mat</span><span class="p">,</span><span class="w"> </span><span class="n">MARGIN</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">FUN</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">contam.rate</span><span class="p">){</span>
+<span class="w">    </span><span class="nf">pwr.func</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n.group1</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m1</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span>
+<span class="w">        </span><span class="n">m2</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span>
+<span class="w">        </span><span class="n">sd</span><span class="o">=</span><span class="m">1</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">contamin.rate</span><span class="o">=</span><span class="n">contam.rate</span><span class="p">)}</span><span class="w">  </span>
+<span class="w">                  </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/5e1e83e0d367300865000f8366f591f741ccbc9a050ffbed738360bf3945c9f1.png" src="_images/5e1e83e0d367300865000f8366f591f741ccbc9a050ffbed738360bf3945c9f1.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\textbf{Power vs contamination rate for a fixed sample size using}\)</span> <span class="math notranslate nohighlight">\(\underline{\text{option 2}} \)</span> <span class="math notranslate nohighlight">\(\textbf{method of contamination}\)</span></p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">est.pwr.vec</span><span class="o">=</span><span class="nf">apply</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">contam.mat</span><span class="p">,</span><span class="w"> </span><span class="n">MARGIN</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">FUN</span><span class="o">=</span><span class="n">pwr.vs.contam.option2</span><span class="p">)</span>
+
+
+<span class="c1"># Check the power we expect under the different contaminations using closed form formula </span>
+<span class="n">true.pwr.vec</span><span class="o">=</span><span class="nf">apply</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">contam.mat</span><span class="p">,</span><span class="w"> </span><span class="n">MARGIN</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">FUN</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">contam.rate</span><span class="p">){</span>
+<span class="w">    </span><span class="nf">pwr.func</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n.group1</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">m1</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span>
+<span class="w">        </span><span class="n">m2</span><span class="o">=</span><span class="m">1.2</span><span class="p">,</span>
+<span class="w">        </span><span class="n">sd</span><span class="o">=</span><span class="m">1</span><span class="p">,</span>
+<span class="w">        </span><span class="n">type_I_error</span><span class="o">=</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">contamin.rate</span><span class="o">=</span><span class="n">contam.rate</span><span class="p">)}</span><span class="w">  </span>
+<span class="w">                  </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">pwr.vs.contam.option2</span><span class="p">(</span><span class="n">contam.rate</span><span class="o">=</span><span class="m">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>trt.contam
+  0   1 
+345 441 
+</pre></div>
+</div>
+<div class="output text_html">0.24</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">table</span><span class="p">(</span><span class="nf">rbinom</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">prob</span><span class="o">=</span><span class="m">0.5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0   1 
+392 394 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/c36e36fb424183dba69ad100136ab87f70e8698e1b3a2be921ae1669c2a0219d.png" src="_images/c36e36fb424183dba69ad100136ab87f70e8698e1b3a2be921ae1669c2a0219d.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\textbf{Power vs contamination rate for different sample sizes adjusted for the contamination.}\)</span></p>
+<p>That is, the sample sizes are calculated based on the attenuated treatment effect. Here, I expect that the power not to change that much!</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_html">0.78</div></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/107282f5231735f7e93f6be41d3e612584b8a7492434ae4f03a2e4885dfd9788.png" src="_images/107282f5231735f7e93f6be41d3e612584b8a7492434ae4f03a2e4885dfd9788.png" />
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/5014a9d98421f4089eb410084deda996e4a116fba06b3c84a9372b3da87d8566.png" src="_images/5014a9d98421f4089eb410084deda996e4a116fba06b3c84a9372b3da87d8566.png" />
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/ce52be5d3da16cd03acc3b27d4c8db6424c927471350ec83d0089b2756cf0f15.png" src="_images/ce52be5d3da16cd03acc3b27d4c8db6424c927471350ec83d0089b2756cf0f15.png" />
+</div>
+</div>
+<p>Standard Normal Density Plot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">12</span><span class="p">)</span>
+<span class="n">xdf</span><span class="o">=</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nf">rnorm</span><span class="p">(</span><span class="m">100000</span><span class="p">))</span>
+
+<span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.height</span><span class="w"> </span><span class="o">=</span><span class="m">5</span><span class="p">)</span><span class="w"> </span>
+<span class="n">plt.dens</span><span class="o">=</span><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">xdf</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">))</span><span class="o">+</span>
+<span class="nf">geom_density</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">1.2</span><span class="p">)</span><span class="o">+</span>
+<span class="nf">theme</span><span class="p">(</span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="c1">#face = &quot;bold&quot;, </span>
+<span class="w">                            </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                           </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">))</span><span class="o">+</span>
+<span class="nf">ggtitle</span><span class="p">(</span><span class="s">&#39;N(0,1) density&#39;</span><span class="p">)</span><span class="o">+</span><span class="nf">theme</span><span class="p">(</span><span class="n">panel.grid.major</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span><span class="w"> </span><span class="n">panel.grid.minor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span>
+<span class="n">panel.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span><span class="w"> </span><span class="n">axis.line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_line</span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">))</span>
+
+<span class="c1">#ggsave(file=paste0(tab_fig_path,&quot;standardnormaldensity.svg&quot;), plot=plt.dens, width=15, height=5 )</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Elly Kipkogei
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
